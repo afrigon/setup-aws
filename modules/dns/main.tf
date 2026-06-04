@@ -64,12 +64,3 @@ resource "aws_route53_record" "spf" {
   records = [var.email_configuration.spf]
   ttl     = var.default_ttl
 }
-
-resource "aws_route53_record" "dkim" {
-  count   = var.email_configuration == null ? 0 : 1
-  zone_id = aws_route53_zone.zone.zone_id
-  type    = "TXT"
-  name    = "pic._domainkey.${var.domain}"
-  records = [var.email_configuration.dkim]
-  ttl     = var.default_ttl
-}
