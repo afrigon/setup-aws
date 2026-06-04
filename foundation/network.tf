@@ -20,7 +20,7 @@ module "frigon_app_dns" {
   email_configuration = {
     mxa = "mx1.improvmx.com"
     mxb = "mx2.improvmx.com"
-    spf = "v=spf1 include:spf.improvmx.com.org ~all"
+    spf = "v=spf1 include:spf.improvmx.com.org include:spf.improvmx.com ~all"
   }
   default_ttl = local.default_ttl
 }
@@ -45,11 +45,6 @@ module "xlang_dev_dns" {
 
   domain           = local.xlang_domain
   update_registrar = true
-  email_configuration = {
-    mxa = "mx1.improvmx.com"
-    mxb = "mx2.improvmx.com"
-    spf = "v=spf1 include:spf.improvmx.com.org ~all"
-  }
   default_ttl = local.default_ttl
 }
 
