@@ -24,9 +24,25 @@ output "name_servers_xlang_dev" {
   value = module.xlang_dev_dns.name_servers
 }
 
-// xlang DNSSEC — DS record at the registrar must be associated manually.
+// DNSSEC — DS record at the registrar must be associated manually.
 // See modules/dnssec/main.tf for the reason. Run the associate command
 // once after apply; run the disassociate command before destroy.
+
+output "dnssec_frigon_app_associate_command" {
+  value = module.frigon_app_dnssec.associate_command
+}
+
+output "dnssec_frigon_app_disassociate_command" {
+  value = module.frigon_app_dnssec.disassociate_command
+}
+
+output "dnssec_frigon_app_signing_attributes" {
+  value = {
+    algorithm  = module.frigon_app_dnssec.signing_algorithm
+    flags      = module.frigon_app_dnssec.flags
+    public_key = module.frigon_app_dnssec.public_key
+  }
+}
 
 output "dnssec_xlang_dev_associate_command" {
   value = module.xlang_dev_dnssec.associate_command
