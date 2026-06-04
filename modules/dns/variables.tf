@@ -8,7 +8,6 @@ variable "email_configuration" {
     mxa  = string
     mxb  = string
     spf  = string
-    dkim = string
   })
   description = "The email related records for this zone"
   default     = null
