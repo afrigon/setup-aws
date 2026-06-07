@@ -1,88 +1,9 @@
-terraform {
-  required_version = ">= 1.15"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 6.47"
-    }
-  }
-
-  backend "s3" {
-    bucket       = "terraform-xehos"
-    key          = "bootstrap.tfstate"
-    region       = "us-east-1"
-    encrypt      = true
-    use_lockfile = true
-  }
-}
-
-provider "aws" {
-  region = var.region
-}
-
-locals {
-  state_bucket    = "terraform-xehos"
-  foundation_role = "foundation"
-}
-
-// Terraform State Bucket
-
-resource "aws_s3_bucket" "terraform_state" {
-  bucket = local.state_bucket
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "aws_s3_bucket_versioning" "terraform_state" {
-  bucket = aws_s3_bucket.terraform_state.id
-
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-
-resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" {
-  bucket = aws_s3_bucket.terraform_state.id
-
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
-    }
-  }
-}
-
-resource "aws_s3_bucket_public_access_block" "terraform_state" {
-  bucket                  = aws_s3_bucket.terraform_state.id
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
-
-// Github Identity Provider
-
-resource "aws_iam_openid_connect_provider" "github" {
-  url            = "https://token.actions.githubusercontent.com"
-  client_id_list = ["sts.amazonaws.com"]
-}
-
-data "aws_caller_identity" "current" {}
-
-data "aws_iam_session_context" "current" {
-  arn = data.aws_caller_identity.current.arn
-}
-
-// Foundation Role
-
 module "foundation_role" {
   source     = "../modules/ci-role"
   depends_on = [aws_iam_openid_connect_provider.github]
 
-  name         = local.foundation_role
-  state_bucket = local.state_bucket
+  name         = "foundation"
+  state_bucket = "terraform-xehos"
   github       = var.github
   permissions = [
     {

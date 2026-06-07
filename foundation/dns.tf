@@ -1,7 +1,6 @@
 locals {
   xlang_domain  = "x-lang.dev"
   frigon_domain = "frigon.app"
-  home_ip       = "107.171.186.150"
   default_ttl   = 1800
 }
 
@@ -23,14 +22,6 @@ module "frigon_app_dns" {
     spf = "v=spf1 include:spf.improvmx.com.org include:spf.improvmx.com ~all"
   }
   default_ttl = local.default_ttl
-}
-
-resource "aws_route53_record" "home" {
-  zone_id = module.frigon_app_dns.zone_id
-  type    = "A"
-  name    = "home"
-  records = [local.home_ip]
-  ttl     = local.default_ttl
 }
 
 # xlang.dev dns
