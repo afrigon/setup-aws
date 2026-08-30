@@ -24,6 +24,14 @@ module "frigon_app_dns" {
   default_ttl = local.default_ttl
 }
 
+resource "aws_route53_record" "frigon_app_github_pages_challenge" {
+  zone_id = module.frigon_app_dns.zone_id
+  type    = "TXT"
+  name    = "_github-pages-challenge-afrigon"
+  records = ["d43a4033f036f81240a27196a84591"]
+  ttl     = local.default_ttl
+}
+
 # xlang.dev dns
 
 module "xlang_dev_dns" {
@@ -37,6 +45,14 @@ module "xlang_dev_dns" {
   domain           = local.xlang_domain
   update_registrar = true
   default_ttl = local.default_ttl
+}
+
+resource "aws_route53_record" "xlang_dev_github_pages_challenge" {
+  zone_id = module.xlang_dev_dns.zone_id
+  type    = "TXT"
+  name    = "_github-pages-challenge-afrigon"
+  records = ["9b21170f5e3ee70d5ea419430e4e8b"]
+  ttl     = local.default_ttl
 }
 
 // Wait for new NS records to propagate from Amazon Registrar through IANA
