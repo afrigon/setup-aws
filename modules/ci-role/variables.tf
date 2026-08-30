@@ -16,6 +16,12 @@ variable "github" {
   description = "The owner of the target github repository"
 }
 
+variable "ref_pattern" {
+  type        = string
+  description = "The git ref pattern allowed to assume this role"
+  default     = "refs/tags/*"
+}
+
 variable "permissions" {
   type = list(object({
     actions   = list(string)

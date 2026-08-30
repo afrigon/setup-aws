@@ -44,7 +44,7 @@ module "xlang_dev_dns" {
 
   domain           = local.xlang_domain
   update_registrar = true
-  default_ttl = local.default_ttl
+  default_ttl      = local.default_ttl
 }
 
 resource "aws_route53_record" "xlang_dev_github_pages_challenge" {
