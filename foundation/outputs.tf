@@ -12,6 +12,10 @@ output "role_xlang" {
   value = module.xlang_role.aws_role
 }
 
+output "role_axr" {
+  value = module.axr_role.aws_role
+}
+
 // frigon DNS
 
 output "name_servers_frigon_app" {
