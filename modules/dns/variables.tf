@@ -5,9 +5,9 @@ variable "domain" {
 
 variable "email_configuration" {
   type = object({
-    mxa  = string
-    mxb  = string
-    spf  = string
+    mxa = string
+    mxb = string
+    spf = string
   })
   description = "The email related records for this zone"
   default     = null
