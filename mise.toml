@@ -5,8 +5,8 @@ lockfile = true
 AWS_REGION = "us-east-1"
 
 [tools]
-terraform = "1.16.0"
-awscli = "2.36.34"
+terraform = "1"
+awscli = "2"
 
 [tasks.bootstrap]
 description = "Provision the state backend, OIDC provider, and foundation CI role"
