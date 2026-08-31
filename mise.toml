@@ -1,6 +1,20 @@
 [settings]
 lockfile = true
 
+[env]
+AWS_REGION = "us-east-1"
+
 [tools]
 terraform = "1.16.0"
 awscli = "2.36.34"
+
+[tasks.bootstrap]
+description = "Provision the state backend, OIDC provider, and foundation CI role"
+run = '''
+aws sts get-caller-identity > /dev/null 2>&1 ||
+    { echo "aws cli not authenticated"; exit 1; }
+aws s3api head-bucket --bucket terraform-xehos 2> /dev/null ||
+    { echo "the bucket must be created manually: s3://terraform-xehos does not exist"; exit 1; }
+terraform -chdir=./bootstrap init
+terraform -chdir=./bootstrap apply
+'''
